@@ -1,3 +1,4 @@
+/* eslint-disable @adonisjs/prefer-lazy-controller-import */
 /*
 |--------------------------------------------------------------------------
 | Routes file
@@ -8,7 +9,6 @@
 */
 
 import router from '@adonisjs/core/services/router'
-const IClockTransactionsController = () => import('#controllers/iclock_transactions_controller')
 // import HealthCheck from '@ioc:Adonis/Core/HealthCheck'
 
 router.get('/', async ({ view }) => {
@@ -16,4 +16,10 @@ router.get('/', async ({ view }) => {
   return view.render('swagger', { specUrl })
 })
 
-router.get('/iclock-transactions', [IClockTransactionsController, 'index'])
+router.get('/iclock-transactions', '#controllers/iclock_transactions_controller.index')
+
+// router.get('health', async ({ response }) => {
+//   const report = await HealthCheck.getReport()
+
+//   return report.healthy ? response.ok(report) : response.badRequest(report)
+// })
