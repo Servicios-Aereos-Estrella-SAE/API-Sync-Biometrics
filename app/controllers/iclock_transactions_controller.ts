@@ -76,7 +76,7 @@ export default class IClockTransactionsController {
    *                     type: number
    */
   @inject()
-  index(ctx: HttpContext, i_clock_terminal_services: IClockTransactionService) {
+  index(i_clock_terminal_services: IClockTransactionService) {
     // return i_clock_terminal_services.getAllTransactions()
     // return response all transactions json
     return i_clock_terminal_services.getAllTransactions()
