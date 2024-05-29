@@ -65,6 +65,8 @@
     "edge.js": "^6.0.2",
     "luxon": "^3.4.4",
     "mysql2": "^3.9.7",
+    "pg": "^8.11.5",
+    "proxy-addr": "^2.0.7",
     "reflect-metadata": "^0.2.2"
   },
   "hotHook": {

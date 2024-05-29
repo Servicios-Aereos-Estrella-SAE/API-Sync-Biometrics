@@ -1,15 +1,1 @@
-{
-  "openapi": "3.0.0",
-  "info": {
-    "title": "Application with swagger docs",
-    "version": "1.0.0",
-    "description": "My application with swagger docs"
-  },
-  "components": {
-    "securitySchemes": {
-      "bearerAuth": { "type": "http", "scheme": "bearer", "bearerFormat": "JWT" }
-    }
-  },
-  "paths": {},
-  "tags": []
-}
+{"openapi":"3.0.0","info":{"title":"Application with swagger docs","version":"1.0.0","description":"My application with swagger docs"},"components":{"securitySchemes":{"bearerAuth":{"type":"http","scheme":"bearer","bearerFormat":"JWT"}}},"paths":{"/iclock-transactions":{"get":{"tags":["IclockTransactions"],"summary":"Get all iclock transactions","responses":{"200":{"description":"Returns all iclock transactions","content":{"application/json":{"schema":{"type":"array","items":{"type":"object","properties":{"id":{"type":"integer"},"empCode":{"type":"string"},"punchTime":{"type":"string","format":"date-time"},"punchState":{"type":"string"},"verifyType":{"type":"integer"},"workCode":{"type":"string"},"terminalSn":{"type":"string"},"terminalAlias":{"type":"string"},"areaAlias":{"type":"string"},"longitude":{"type":"number"},"latitude":{"type":"number"},"gpsLocation":{"type":"string"},"mobile":{"type":"string"},"source":{"type":"integer"},"purpose":{"type":"integer"},"crc":{"type":"string"},"isAttendance":{"type":"integer"},"reserved":{"type":"string"},"uploadTime":{"type":"string","format":"date-time"},"syncStatus":{"type":"integer"},"syncTime":{"type":"string","format":"date-time"},"empId":{"type":"integer"},"terminalId":{"type":"integer"},"isMask":{"type":"integer"},"temperature":{"type":"number"}}}}}}}}}}},"tags":[]}
