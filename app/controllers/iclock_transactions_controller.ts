@@ -11,6 +11,19 @@ export default class IClockTransactionsController {
    *     tags:
    *       - IclockTransactions
    *     summary: Get all iclock transactions
+   *     parameters:
+   *       - name: page
+   *         in: query
+   *         required: false
+   *         description: The page number for pagination
+   *         schema:
+   *           type: integer
+   *       - name: limit
+   *         in: query
+   *         required: false
+   *         description: The number of records per page
+   *         schema:
+   *           type: integer
    *     responses:
    *       200:
    *         description: Returns all iclock transactions
@@ -76,9 +89,11 @@ export default class IClockTransactionsController {
    *                     type: number
    */
   @inject()
-  index({}: HttpContext, i_clock_terminal_services: IClockTransactionService) {
+  index({ request }: HttpContext, i_clock_terminal_services: IClockTransactionService) {
     // return i_clock_terminal_services.getAllTransactions()
     // return response all transactions json
-    return i_clock_terminal_services.getAllTransactions()
+    const page = request.input('page', 1)
+    const limit = request.input('limit', 10)
+    return i_clock_terminal_services.getAllTransactions(page, limit)
   }
 }
