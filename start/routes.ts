@@ -19,6 +19,7 @@ router.get('/', async ({ view }) => {
 router.get('/iclock-transactions', '#controllers/iclock_transactions_controller.index')
 router.get('/departments', '#controllers/personnel_departments_controller.index')
 router.get('/positions', '#controllers/personnel_positions_controller.index')
+router.get('/employees', '#controllers/personnel_employees_controller.index')
 
 // router.get('health', async ({ response }) => {
 //   const report = await HealthCheck.getReport()

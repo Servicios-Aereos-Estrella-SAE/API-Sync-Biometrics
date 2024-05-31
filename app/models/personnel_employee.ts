@@ -188,6 +188,6 @@ export default class PersonnelEmployee extends BaseModel {
   })
   declare personnelPosition: BelongsTo<typeof PersonnelPosition>
 
-  @hasMany(() => IClockTransaction)
+  @hasMany(() => IClockTransaction, { foreignKey: 'empId' })
   declare transactions: HasMany<typeof IClockTransaction>
 }
