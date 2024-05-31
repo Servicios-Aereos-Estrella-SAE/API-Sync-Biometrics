@@ -1,7 +1,9 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, hasMany } from '@adonisjs/lucid/orm'
-import type { HasMany } from '@adonisjs/lucid/types/relations'
+import { BaseModel, belongsTo, column, hasMany } from '@adonisjs/lucid/orm'
+import type { HasMany, BelongsTo } from '@adonisjs/lucid/types/relations'
 import IClockTransaction from '#models/iclock_transaction'
+import PersonnelDepartment from '#models/personnel_department'
+import PersonnelPosition from '#models/personnel_position'
 
 export default class PersonnelEmployee extends BaseModel {
   static table = 'personnel_employee'
@@ -175,6 +177,16 @@ export default class PersonnelEmployee extends BaseModel {
 
   @column()
   declare positionId: number
+
+  @belongsTo(() => PersonnelDepartment, {
+    foreignKey: 'departmentId',
+  })
+  declare personnelDepartment: BelongsTo<typeof PersonnelDepartment>
+
+  @belongsTo(() => PersonnelPosition, {
+    foreignKey: 'positionId',
+  })
+  declare personnelPosition: BelongsTo<typeof PersonnelPosition>
 
   @hasMany(() => IClockTransaction)
   declare transactions: HasMany<typeof IClockTransaction>
