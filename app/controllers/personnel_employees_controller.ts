@@ -65,10 +65,22 @@ export default class PersonnelEmployeesController {
    *         description: The position code to filter by
    *         schema:
    *           type: string
-   *       - name: punchTime
+   *       - name: departmentId
    *         in: query
    *         required: false
-   *         description: The punch time to filter by format year month day
+   *         description: The department id to filter by
+   *         schema:
+   *          type: integer
+   *       - name: positionId
+   *         in: query
+   *         required: false
+   *         description: The position id to filter by
+   *         schema:
+   *          type: integer
+   *       - name: hireDate
+   *         in: query
+   *         required: false
+   *         description: The hire date to filter by format year month day
    *         schema:
    *           type: string
    *           format: date
@@ -131,8 +143,11 @@ export default class PersonnelEmployeesController {
       depName: request.input('depName'),
       positionName: request.input('positionName'),
       depCode: request.input('depCode'),
+      positionId: request.input('positionId'),
+      departmentId: request.input('departmentId'),
       positionCode: request.input('positionCode'),
       punchTime: request.input('punchTime'),
+      hireDate: request.input('hireDate'),
     }
 
     const employees = await personnel_employee_service.listEmployees(page, limit, filters)

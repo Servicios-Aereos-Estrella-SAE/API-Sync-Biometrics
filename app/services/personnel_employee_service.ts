@@ -3,7 +3,7 @@ import { DateTime } from 'luxon'
 
 export default class PersonnelEmployeeService {
   async listEmployees(page: number = 1, limit: number = 10, filters: any = {}) {
-    const query = PersonnelEmployee.query()
+    const query = PersonnelEmployee.query().orderBy('id', 'desc')
 
     if (filters.empCode) {
       query.where('emp_code', filters.empCode)
@@ -42,12 +42,18 @@ export default class PersonnelEmployeeService {
       })
     }
 
-    if (filters.punchTime) {
-      const startDate = DateTime.fromISO(filters.punchTime).startOf('day').toSQL() ?? ''
-      const endDate = DateTime.fromISO(filters.punchTime).endOf('day').toSQL() ?? ''
-      query.whereHas('transactions', (transactionQuery) => {
-        transactionQuery.whereBetween('punch_time', [startDate, endDate])
-      })
+    if (filters.positionId) {
+      query.where('position_id', filters.positionId)
+    }
+
+    if (filters.departmentId) {
+      query.where('department_id', filters.departmentId)
+    }
+
+    if (filters.hireDate) {
+      const startDate = DateTime.fromISO(filters.hireDate).startOf('day').toSQL() ?? ''
+      const endDate = DateTime.fromISO(filters.hireDate).endOf('day').toSQL() ?? ''
+      query.whereBetween('hire_date', [startDate, endDate])
     }
 
     return await query

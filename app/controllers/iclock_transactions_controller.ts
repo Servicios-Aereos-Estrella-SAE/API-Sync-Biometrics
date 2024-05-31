@@ -24,6 +24,31 @@ export default class IClockTransactionsController {
    *         description: The number of records per page
    *         schema:
    *           type: integer
+   *       - name: departmentId
+   *         in: query
+   *         required: false
+   *         description: The department id to filter by
+   *         schema:
+   *          type: integer
+   *       - name: empId
+   *         in: query
+   *         required: false
+   *         description: The employee id to filter by
+   *         schema:
+   *          type: integer
+   *       - name: positionId
+   *         in: query
+   *         required: false
+   *         description: The position id to filter by
+   *         schema:
+   *          type: integer
+   *       - name: punchDate
+   *         in: query
+   *         required: false
+   *         description: The punch date to filter by format year month day
+   *         schema:
+   *           type: string
+   *           format: date
    *     responses:
    *       200:
    *         description: Returns all iclock transactions
@@ -94,6 +119,12 @@ export default class IClockTransactionsController {
     // return response all transactions json
     const page = request.input('page', 1)
     const limit = request.input('limit', 10)
-    return i_clock_terminal_services.getAllTransactions(page, limit)
+    const filters = {
+      empId: request.input('empId'),
+      departmentId: request.input('departmentId'),
+      positionId: request.input('positionId'),
+      punchDate: request.input('punchDate'),
+    }
+    return i_clock_terminal_services.getAllTransactions(page, limit, filters)
   }
 }

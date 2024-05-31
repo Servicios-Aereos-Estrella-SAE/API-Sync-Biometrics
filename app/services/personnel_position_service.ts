@@ -2,7 +2,7 @@ import PersonnelPosition from '#models/personnel_position'
 
 export default class PersonnelPositionService {
   async listPositions(page: number = 1, limit: number = 10, filters: any = {}) {
-    const query = PersonnelPosition.query()
+    const query = PersonnelPosition.query().orderBy('id', 'desc')
 
     if (filters.positionCode) {
       query.where('position_code', filters.positionCode)
