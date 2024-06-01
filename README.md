@@ -6,7 +6,7 @@ API REST para el control de servicios en los proyectos internos de SAE y la sinc
 
 ## Tech Stack
 
-**Server:** AdonisJS, MySQL, Swagger Docs
+**Server:** AdonisJS, PostgreSQL, Swagger Docs
 
 **Node Version:** 20.13.1 LTS
 
