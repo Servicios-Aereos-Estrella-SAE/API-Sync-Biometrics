@@ -9,8 +9,8 @@ const dbConfig = defineConfig({
       connection: {
         host: env.get('DB_HOST_HOST') as string,
         port: Number(env.get('DB_PORT', 5432)),
-        user: env.get('DB_HOST_USER', 'postgres') as string,
-        password: env.get('DB_HOST_PASSWORD', ''),
+        user: env.get('DB_USER', 'postgres') as string,
+        password: env.get('DB_PASSWORD', ''),
         database: env.get('DB_DATABASE'),
       },
       migrations: {

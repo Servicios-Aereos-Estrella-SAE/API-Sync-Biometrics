@@ -6,10 +6,10 @@ import { inject } from '@adonisjs/core'
 export default class PersonnelDepartmentsController {
   /**
    * @swagger
-   * /departments:
+   * /api/v1/departments:
    *   get:
    *     tags:
-   *       - PersonnelDepartments
+   *       - Departments
    *     summary: List all departments with pagination and optional filters
    *     parameters:
    *       - name: page
@@ -24,16 +24,16 @@ export default class PersonnelDepartmentsController {
    *         description: The number of records per page
    *         schema:
    *           type: integer
-   *       - name: deptCode
+   *       - name: depCode
    *         in: query
    *         required: false
-   *         description: The department code to filter by
+   *         description: The departament code to filter by
    *         schema:
    *           type: string
-   *       - name: deptName
+   *       - name: depName
    *         in: query
    *         required: false
-   *         description: The department name to filter by
+   *         description: The departament name to filter by
    *         schema:
    *           type: string
    *     responses:
@@ -58,34 +58,32 @@ export default class PersonnelDepartmentsController {
    *                 data:
    *                   type: array
    *                   items:
-   *                     type: object
-   *                     properties:
-   *                       id:
-   *                         type: integer
-   *                       deptCode:
-   *                         type: string
-   *                       deptName:
-   *                         type: string
-   *                       isDefault:
-   *                         type: boolean
-   *                       companyId:
-   *                         type: integer
-   *                       parentDeptId:
-   *                         type: integer
+   *                      $ref: '#/definitions/PersonnelDepartment'
+   */
+  /**
+   * Controller method to handle fetching and listing departments.
+   *
+   * @param {HttpContext} context - The HTTP context object containing the request and response.
+   * @param {PersonnelDepartmentService} personnel_department_services - The service class for personnel department operations.
+   *
+   * @returns {Promise<Response>} - The JSON response containing the list of departments.
    */
   @inject()
   async index(
     { request, response }: HttpContext,
     personnel_department_services: PersonnelDepartmentService
   ) {
+    // Extract pagination parameters from the request, with defaults
     const page = request.input('page', 1)
     const limit = request.input('limit', 10)
+    // Extract filtering parameters from the request
     const filters = {
-      deptCode: request.input('deptCode'),
-      deptName: request.input('deptName'),
+      depCode: request.input('depCode'),
+      depName: request.input('depName'),
     }
-
+    // Fetch the list of departments using the service class, applying pagination and filters
     const departments = await personnel_department_services.listDepartments(page, limit, filters)
+    // Return the fetched list as a JSON response
     return response.json(departments)
   }
 }

@@ -2,7 +2,148 @@ import { DateTime } from 'luxon'
 import { BaseModel, column, hasMany } from '@adonisjs/lucid/orm'
 import type { HasMany } from '@adonisjs/lucid/types/relations'
 import IClockTransaction from '#models/iclock_transaction'
-
+/**
+ * @swagger
+ * definitions:
+ *   IClockTerminal:
+ *     type: object
+ *     properties:
+ *       id:
+ *         type: integer
+ *       createTime:
+ *         type: string
+ *         format: date-time
+ *       createUser:
+ *         type: string
+ *       changeTime:
+ *         type: string
+ *         format: date-time
+ *       changeUser:
+ *         type: string
+ *       status:
+ *         type: integer
+ *       sn:
+ *         type: string
+ *       alias:
+ *         type: string
+ *       ipAddress:
+ *         type: string
+ *       realIp:
+ *         type: string
+ *       state:
+ *         type: integer
+ *       terminalTz:
+ *         type: integer
+ *       heartbeat:
+ *         type: integer
+ *       transferMode:
+ *         type: integer
+ *       transferInterval:
+ *         type: integer
+ *       transferTime:
+ *         type: string
+ *       productType:
+ *         type: integer
+ *       isAttendance:
+ *         type: integer
+ *       isRegistration:
+ *         type: integer
+ *       purpose:
+ *         type: integer
+ *       controllerType:
+ *         type: integer
+ *       authentication:
+ *         type: integer
+ *       style:
+ *         type: string
+ *       uploadFlag:
+ *         type: string
+ *       fwVer:
+ *         type: string
+ *       pushProtocol:
+ *         type: string
+ *       pushVer:
+ *         type: string
+ *       language:
+ *         type: integer
+ *       isTft:
+ *         type: boolean
+ *       terminalName:
+ *         type: string
+ *       platform:
+ *         type: string
+ *       oemVendor:
+ *         type: string
+ *       logStamp:
+ *         type: string
+ *       opLogStamp:
+ *         type: string
+ *       captureStamp:
+ *         type: string
+ *       userCount:
+ *         type: integer
+ *       userCapacity:
+ *         type: integer
+ *       photoFuncOn:
+ *         type: boolean
+ *       transactionCount:
+ *         type: integer
+ *       transactionCapacity:
+ *         type: integer
+ *       fpFuncOn:
+ *         type: boolean
+ *       fpCount:
+ *         type: integer
+ *       fpCapacity:
+ *         type: integer
+ *       fpAlgVer:
+ *         type: string
+ *       faceFuncOn:
+ *         type: boolean
+ *       faceCount:
+ *         type: integer
+ *       faceCapacity:
+ *         type: integer
+ *       faceAlgVer:
+ *         type: string
+ *       fvFuncOn:
+ *         type: boolean
+ *       fvCount:
+ *         type: integer
+ *       fvCapacity:
+ *         type: integer
+ *       fvAlgVer:
+ *         type: string
+ *       palmFuncOn:
+ *         type: boolean
+ *       palmCount:
+ *         type: integer
+ *       palmCapacity:
+ *         type: integer
+ *       palmAlgVer:
+ *         type: string
+ *       lockFunc:
+ *         type: integer
+ *       lastActivity:
+ *         type: string
+ *         format: date-time
+ *       uploadTime:
+ *         type: string
+ *         format: date-time
+ *       pushTime:
+ *         type: string
+ *         format: date-time
+ *       isAccess:
+ *         type: integer
+ *       areaId:
+ *         type: integer
+ *       companyId:
+ *         type: integer
+ *       transactions:
+ *         type: array
+ *         items:
+ *           $ref: '#/definitions/IClockTransaction'
+ */
 export default class IClockTerminal extends BaseModel {
   static table = 'iclock_terminal'
   @column({ isPrimary: true })
