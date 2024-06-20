@@ -106,7 +106,7 @@ export default class PersonnelEmployeesController {
    *                 data:
    *                   type: array
    *                   items:
-   *                     $ref: '#/definitions/PersonnelEmployee'
+   *                     $ref: '#/components/schemas/PersonnelEmployee'
    */
   /**
    * Controller method to handle fetching and listing employees.

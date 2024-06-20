@@ -2,28 +2,23 @@ import { BaseModel, column, belongsTo, hasMany } from '@adonisjs/lucid/orm'
 import type { BelongsTo, HasMany } from '@adonisjs/lucid/types/relations'
 /**
  * @swagger
- * definitions:
- *   PersonnelDepartment:
- *     type: object
- *     properties:
- *       id:
- *         type: integer
- *       deptCode:
- *         type: string
- *       deptName:
- *         type: string
- *       isDefault:
- *         type: boolean
- *       companyId:
- *         type: integer
- *       parentDeptId:
- *         type: integer
- *       parentDepartment:
- *         $ref: '#/definitions/PersonnelDepartment'
- *       subDepartments:
- *         type: array
- *         items:
- *           $ref: '#/definitions/PersonnelDepartment'
+ * components:
+ *   schemas:
+ *     PersonnelDepartment:
+ *      type: object
+ *      properties:
+ *        id:
+ *          type: integer
+ *        deptCode:
+ *          type: string
+ *        deptName:
+ *          type: string
+ *        isDefault:
+ *          type: boolean
+ *        companyId:
+ *          type: integer
+ *        parentDeptId:
+ *          type: integer
  */
 
 export default class PersonnelDepartment extends BaseModel {

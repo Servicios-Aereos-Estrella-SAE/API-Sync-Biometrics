@@ -6,73 +6,70 @@ import { DateTime } from 'luxon'
 
 /**
  * @swagger
- * definitions:
- *   IClockTransaction:
- *     type: object
- *     properties:
- *       id:
- *         type: integer
- *       empCode:
- *         type: string
- *       punchTime:
- *         type: string
- *         format: date-time
- *       punchState:
- *         type: string
- *       verifyType:
- *         type: integer
- *       workCode:
- *         type: string
- *       terminalSn:
- *         type: string
- *       terminalAlias:
- *         type: string
- *       areaAlias:
- *         type: string
- *       longitude:
- *         type: number
- *       latitude:
- *         type: number
- *       gpsLocation:
- *         type: string
- *       mobile:
- *         type: string
- *       source:
- *         type: integer
- *       purpose:
- *         type: integer
- *       crc:
- *         type: string
- *       isAttendance:
- *         type: integer
- *       reserved:
- *         type: string
- *       uploadTime:
- *         type: string
- *         format: date-time
- *       syncStatus:
- *         type: integer
- *       syncTime:
- *         type: string
- *         format: date-time
- *       empId:
- *         type: integer
- *       terminalId:
- *         type: integer
- *       isMask:
- *         type: integer
- *       temperature:
- *         type: number
- *       employee:
- *         $ref: '#/definitions/PersonnelEmployee'
- *       terminal:
- *         $ref: '#/definitions/IClockTerminal'
- *       createdAt:
- *         type: string
- *         format: date-time
- *       updatedAt:
- *         type: string
- *         format: date-time
+ * components:
+ *   schemas:
+ *      IClockTransaction:
+ *        type: object
+ *        properties:
+ *          id:
+ *            type: integer
+ *          empCode:
+ *            type: string
+ *          punchTime:
+ *            type: string
+ *            format: date-time
+ *          punchState:
+ *            type: string
+ *          verifyType:
+ *            type: integer
+ *          workCode:
+ *            type: string
+ *          terminalSn:
+ *            type: string
+ *          terminalAlias:
+ *            type: string
+ *          areaAlias:
+ *            type: string
+ *          longitude:
+ *            type: number
+ *          latitude:
+ *            type: number
+ *          gpsLocation:
+ *            type: string
+ *          mobile:
+ *            type: string
+ *          source:
+ *            type: integer
+ *          purpose:
+ *            type: integer
+ *          crc:
+ *            type: string
+ *          isAttendance:
+ *            type: integer
+ *          reserved:
+ *            type: string
+ *          uploadTime:
+ *            type: string
+ *            format: date-time
+ *          syncStatus:
+ *            type: integer
+ *          syncTime:
+ *            type: string
+ *            format: date-time
+ *          empId:
+ *            type: integer
+ *          terminalId:
+ *            type: integer
+ *          isMask:
+ *            type: integer
+ *          temperature:
+ *            type: number
+ *          createdAt:
+ *            type: string
+ *            format: date-time
+ *          updatedAt:
+ *            type: string
+ *            format: date-time
  */
 export default class IClockTransaction extends BaseModel {
   static table = 'iclock_transaction'
