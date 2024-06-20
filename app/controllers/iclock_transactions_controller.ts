@@ -6,11 +6,11 @@ import { HttpContext } from '@adonisjs/core/http'
 export default class IClockTransactionsController {
   /**
    * @swagger
-   * /iclock-transactions:
+   * /api/v1/transactions:
    *   get:
    *     tags:
-   *       - IclockTransactions
-   *     summary: Get all iclock transactions
+   *       - Transactions
+   *     summary: Get all transactions
    *     parameters:
    *       - name: page
    *         in: query
@@ -57,74 +57,29 @@ export default class IClockTransactionsController {
    *             schema:
    *               type: array
    *               items:
-   *                 type: object
-   *                 properties:
-   *                   id:
-   *                     type: integer
-   *                   empCode:
-   *                     type: string
-   *                   punchTime:
-   *                     type: string
-   *                     format: date-time
-   *                   punchState:
-   *                     type: string
-   *                   verifyType:
-   *                     type: integer
-   *                   workCode:
-   *                     type: string
-   *                   terminalSn:
-   *                     type: string
-   *                   terminalAlias:
-   *                     type: string
-   *                   areaAlias:
-   *                     type: string
-   *                   longitude:
-   *                     type: number
-   *                   latitude:
-   *                     type: number
-   *                   gpsLocation:
-   *                     type: string
-   *                   mobile:
-   *                     type: string
-   *                   source:
-   *                     type: integer
-   *                   purpose:
-   *                     type: integer
-   *                   crc:
-   *                     type: string
-   *                   isAttendance:
-   *                     type: integer
-   *                   reserved:
-   *                     type: string
-   *                   uploadTime:
-   *                     type: string
-   *                     format: date-time
-   *                   syncStatus:
-   *                     type: integer
-   *                   syncTime:
-   *                     type: string
-   *                     format: date-time
-   *                   empId:
-   *                     type: integer
-   *                   terminalId:
-   *                     type: integer
-   *                   isMask:
-   *                     type: integer
-   *                   temperature:
-   *                     type: number
+   *                 $ref: '#/definitions/IClockTransaction'
+   */
+  /**
+   * Controller method to handle fetching and listing transactions.
+   *
+   * @param {HttpContext} context - The HTTP context object containing the request.
+   * @param {IClockTransactionService} i_clock_terminal_services - The service class for iClock transaction operations.
+   *
+   * @returns {Promise<Response>} - The JSON response containing the list of transactions.
    */
   @inject()
   index({ request }: HttpContext, i_clock_terminal_services: IClockTransactionService) {
-    // return i_clock_terminal_services.getAllTransactions()
-    // return response all transactions json
+    // Extract pagination parameters from the request, with defaults
     const page = request.input('page', 1)
     const limit = request.input('limit', 10)
+    // Extract filtering parameters from the request
     const filters = {
       empId: request.input('empId'),
       departmentId: request.input('departmentId'),
       positionId: request.input('positionId'),
       punchDate: request.input('punchDate'),
     }
+    // Fetch the list of transactions using the service class, applying pagination and filters
     return i_clock_terminal_services.getAllTransactions(page, limit, filters)
   }
 }

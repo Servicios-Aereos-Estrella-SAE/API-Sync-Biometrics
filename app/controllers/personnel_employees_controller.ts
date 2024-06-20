@@ -5,10 +5,10 @@ import PersonnelEmployeeService from '#services/personnel_employee_service'
 export default class PersonnelEmployeesController {
   /**
    * @swagger
-   * /employees:
+   * /api/v1/employees:
    *   get:
    *     tags:
-   *       - PersonnelEmployees
+   *       - Employees
    *     summary: List all employees with pagination and optional filters
    *     parameters:
    *       - name: page
@@ -106,36 +106,26 @@ export default class PersonnelEmployeesController {
    *                 data:
    *                   type: array
    *                   items:
-   *                     type: object
-   *                     properties:
-   *                       id:
-   *                         type: integer
-   *                       empCode:
-   *                         type: string
-   *                       firstName:
-   *                         type: string
-   *                       lastName:
-   *                         type: string
-   *                       departmentId:
-   *                         type: integer
-   *                       positionId:
-   *                         type: integer
-   *                       personnelDepartment:
-   *                         type: object
-   *                       personnelPosition:
-   *                         type: object
-   *                       transactions:
-   *                         type: array
-   *                         items:
-   *                           type: object
+   *                     $ref: '#/definitions/PersonnelEmployee'
+   */
+  /**
+   * Controller method to handle fetching and listing employees.
+   *
+   * @param {HttpContext} context - The HTTP context object containing the request and response.
+   * @param {PersonnelEmployeeService} personnel_employee_service - The service class for personnel employee operations.
+   *
+   * @returns {Promise<Response>} - The JSON response containing the list of employees.
    */
   @inject()
   async index(
     { request, response }: HttpContext,
     personnel_employee_service: PersonnelEmployeeService
   ) {
+    // Extract pagination parameters from the request, with defaults
     const page = request.input('page', 1)
     const limit = request.input('limit', 10)
+
+    // Extract filtering parameters from the request
     const filters = {
       empCode: request.input('empCode'),
       firstName: request.input('firstName'),
@@ -150,7 +140,9 @@ export default class PersonnelEmployeesController {
       hireDate: request.input('hireDate'),
     }
 
+    // Fetch the list of employees using the service class, applying pagination and filters
     const employees = await personnel_employee_service.listEmployees(page, limit, filters)
+    // Return the fetched list as a JSON response
     return response.json(employees)
   }
 }

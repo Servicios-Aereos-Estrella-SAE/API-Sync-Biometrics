@@ -5,6 +5,142 @@ import IClockTransaction from '#models/iclock_transaction'
 import PersonnelDepartment from '#models/personnel_department'
 import PersonnelPosition from '#models/personnel_position'
 
+/**
+ * @swagger
+ * definitions:
+ *   PersonnelEmployee:
+ *     type: object
+ *     properties:
+ *       id:
+ *         type: integer
+ *       createTime:
+ *         type: string
+ *         format: date-time
+ *       createUser:
+ *         type: string
+ *       changeTime:
+ *         type: string
+ *         format: date-time
+ *       changeUser:
+ *         type: string
+ *       status:
+ *         type: integer
+ *       empCode:
+ *         type: integer
+ *       firstName:
+ *         type: string
+ *       lastName:
+ *         type: string
+ *       nickname:
+ *         type: string
+ *       passport:
+ *         type: string
+ *       driverLicenseAutomobile:
+ *         type: string
+ *       driverLicenseMotorcycle:
+ *         type: string
+ *       photo:
+ *         type: string
+ *       selfPassword:
+ *         type: string
+ *       devicePassword:
+ *         type: string
+ *       devPrivilege:
+ *         type: integer
+ *       cardNo:
+ *         type: string
+ *       accGroup:
+ *         type: string
+ *       accTimezone:
+ *         type: string
+ *       gender:
+ *         type: string
+ *       birthday:
+ *         type: string
+ *         format: date
+ *       address:
+ *         type: string
+ *       postcode:
+ *         type: string
+ *       officeTel:
+ *         type: string
+ *       contactTel:
+ *         type: string
+ *       mobile:
+ *         type: string
+ *       nationalNum:
+ *         type: string
+ *       payrollNum:
+ *         type: string
+ *       internalEmpNum:
+ *         type: string
+ *       national:
+ *         type: string
+ *       religion:
+ *         type: string
+ *       title:
+ *         type: string
+ *       enrollSn:
+ *         type: string
+ *       ssn:
+ *         type: string
+ *       updateTime:
+ *         type: string
+ *         format: date-time
+ *       hireDate:
+ *         type: string
+ *         format: date
+ *       verifyMode:
+ *         type: integer
+ *       city:
+ *         type: string
+ *       isAdmin:
+ *         type: boolean
+ *       empType:
+ *         type: integer
+ *       enableAtt:
+ *         type: boolean
+ *       enablePayroll:
+ *         type: boolean
+ *       enableOvertime:
+ *         type: boolean
+ *       enableHoliday:
+ *         type: boolean
+ *       deleted:
+ *         type: boolean
+ *       reserved:
+ *         type: integer
+ *       delTag:
+ *         type: integer
+ *       appStatus:
+ *         type: integer
+ *       appRole:
+ *         type: integer
+ *       email:
+ *         type: string
+ *       lastLogin:
+ *         type: string
+ *         format: date-time
+ *       isActive:
+ *         type: boolean
+ *       vacationRule:
+ *         type: integer
+ *       companyId:
+ *         type: integer
+ *       departmentId:
+ *         type: integer
+ *       positionId:
+ *         type: integer
+ *       personnelDepartment:
+ *         $ref: '#/definitions/PersonnelDepartment'
+ *       personnelPosition:
+ *         $ref: '#/definitions/PersonnelPosition'
+ *       transactions:
+ *         type: array
+ *         items:
+ *           $ref: '#/definitions/IClockTransaction'
+ */
+
 export default class PersonnelEmployee extends BaseModel {
   static table = 'personnel_employee'
   @column({ isPrimary: true })
