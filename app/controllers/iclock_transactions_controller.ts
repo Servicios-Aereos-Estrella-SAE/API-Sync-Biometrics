@@ -57,7 +57,7 @@ export default class IClockTransactionsController {
    *             schema:
    *               type: array
    *               items:
-   *                 $ref: '#/definitions/IClockTransaction'
+   *                 $ref: '#/components/schemas/IClockTransaction'
    */
   /**
    * Controller method to handle fetching and listing transactions.

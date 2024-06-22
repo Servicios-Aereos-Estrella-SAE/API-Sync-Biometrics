@@ -58,7 +58,7 @@ export default class PersonnelDepartmentsController {
    *                 data:
    *                   type: array
    *                   items:
-   *                      $ref: '#/definitions/PersonnelDepartment'
+   *                      $ref: '#/components/schemas/PersonnelDepartment'
    */
   /**
    * Controller method to handle fetching and listing departments.
