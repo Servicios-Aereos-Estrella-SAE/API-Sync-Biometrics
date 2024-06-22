@@ -57,7 +57,7 @@ export default class PersonnelPositionsController {
    *                 data:
    *                   type: array
    *                   items:
-   *                      $ref: '#/definitions/PersonnelPosition'
+   *                      $ref: '#/components/schemas/PersonnelPosition'
    */
 
   /**

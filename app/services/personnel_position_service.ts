@@ -18,7 +18,7 @@ export default class PersonnelPositionService {
    */
   async listPositions(page: number = 1, limit: number = 10, filters: any = {}) {
     // Initialize the query for the PersonnelPosition model
-    const query = PersonnelPosition.query().whereNull('parentPositionId').orderBy('id', 'desc')
+    const query = PersonnelPosition.query().orderBy('id', 'desc')
     // Apply position code filter if provided
     if (filters.positionCode) {
       query.where('position_code', filters.positionCode)
@@ -29,6 +29,6 @@ export default class PersonnelPositionService {
       query.whereLike('position_name', `%${filters.positionName}%`)
     }
     // Execute the query with pagination and preload related subPositions
-    return await query.preload('subPositions').paginate(page, limit)
+    return await query.paginate(page, limit)
   }
 }

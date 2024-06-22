@@ -2,28 +2,23 @@ import { BaseModel, column, belongsTo, hasMany } from '@adonisjs/lucid/orm'
 import type { HasMany, BelongsTo } from '@adonisjs/lucid/types/relations'
 /**
  * @swagger
- * definitions:
- *   PersonnelPosition:
- *     type: object
- *     properties:
- *       id:
- *         type: integer
- *       positionCode:
- *         type: string
- *       positionName:
- *         type: string
- *       isDefault:
- *         type: boolean
- *       companyId:
- *         type: integer
- *       parentPositionId:
- *         type: integer
- *       parentPosition:
- *         $ref: '#/definitions/PersonnelPosition'
- *       subPositions:
- *         type: array
- *         items:
- *           $ref: '#/definitions/PersonnelPosition'
+ * components:
+ *   schemas:
+ *     PersonnelPosition:
+ *      type: object
+ *      properties:
+ *        id:
+ *          type: integer
+ *        positionCode:
+ *          type: string
+ *        positionName:
+ *          type: string
+ *        isDefault:
+ *          type: boolean
+ *        companyId:
+ *          type: integer
+ *        parentPositionId:
+ *          type: integer
  */
 export default class PersonnelPosition extends BaseModel {
   static table = 'personnel_position'
