@@ -17,6 +17,10 @@ router.get('/', async ({ view }) => {
 })
 
 router.get('api/v1/transactions', '#controllers/iclock_transactions_controller.index')
+router.get(
+  'api/v1/transactions-async',
+  '#controllers/iclock_transactions_controller.getAsyncAssists'
+)
 router.get('api/v1/departments', '#controllers/personnel_departments_controller.index')
 router.get('api/v1/positions', '#controllers/personnel_positions_controller.index')
 router.get('api/v1/employees', '#controllers/personnel_employees_controller.index')
