@@ -1,6 +1,8 @@
 import IClockTransaction from '#models/iclock_transaction'
 import db from '@adonisjs/lucid/services/db'
 import { DateTime } from 'luxon'
+import env from '#start/env'
+
 /**
  * Service class for handling operations related to iClock Transactions.
  */
@@ -29,8 +31,8 @@ export default class IClockTransactionService {
       if (filters.empId) {
         query.where('emp_id', filters.empId)
       }
-      // Apply position ID filter if provided
 
+      // Apply position ID filter if provided
       if (filters.positionId) {
         query.whereHas('employee', (empQuery) => {
           empQuery.where('position_id', filters.positionId)
@@ -116,9 +118,9 @@ export default class IClockTransactionService {
 
   async getTransactionsToAsync(page: number = 1, limit: number = 200, filters: any = {}) {
     try {
-      const hoursDiff = 0
-      const hoursLocal = 0
-
+      // set from env env.get('HOURS_DIFF') to integer
+      const hoursDiff = Number(env.get('HOURS_DIFF'))
+      const hoursLocal = Number(env.get('HOURS_LOCAL'))
       // Consulta para obtener el total de registros
       let countQuery = `
         SELECT
