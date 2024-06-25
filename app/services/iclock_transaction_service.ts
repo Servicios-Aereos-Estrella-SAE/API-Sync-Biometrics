@@ -116,8 +116,8 @@ export default class IClockTransactionService {
 
   async getTransactionsToAsync(page: number = 1, limit: number = 200, filters: any = {}) {
     try {
-      const hoursDiff = 13
-      const hoursLocal = 6
+      const hoursDiff = 0
+      const hoursLocal = 0
 
       // Consulta para obtener el total de registros
       let countQuery = `
@@ -143,10 +143,16 @@ export default class IClockTransactionService {
           AND ((ict.punch_time - interval '${hoursDiff} hours') = sub.first_punch OR (ict.punch_time - interval '${hoursDiff} hours') = sub.last_punch)
       `
 
+      const stringDateVal = `${filters.assistDate}`.split('T')[0]
+      const stringDate = `${stringDateVal}T00:00:00.000-06:00`
+      const time = DateTime.fromISO(stringDate, { setZone: true })
+      const timeCST = time.setZone('America/Mexico_City')
+      const filterInitialDate = timeCST.toFormat('yyyy-LL-dd HH:mm:ss')
+
       // Aplicando filtros a la consulta de conteo
       let countParams = {
         empId: filters.empId,
-        assistDate: new Date(filters.assistDate),
+        assistDate: filterInitialDate,
         endAssistsDate: new Date(filters.endAssistsDate),
         hoursDiff,
         hoursLocal,
@@ -181,6 +187,7 @@ export default class IClockTransactionService {
         ict.upload_time,
         ict.emp_id,
         ict.terminal_id,
+        punch_time AS punch_time_origin_real,
         ((ict.punch_time - interval '${hoursDiff} hours')) AS punch_time,
         ((ict.punch_time - interval '${hoursDiff + hoursLocal} hours' )) AS punch_time_local,
         (ict.punch_time - interval '${hoursLocal} hours') AS punch_time_origin
@@ -209,7 +216,7 @@ export default class IClockTransactionService {
         pageSize: limit,
         offset: (page - 1) * limit,
         empId: filters.empId,
-        assistDate: filters.assistDate,
+        assistDate: filterInitialDate,
         endAssistsDate: filters.endAssistsDate,
         hoursDiff,
         hoursLocal,
