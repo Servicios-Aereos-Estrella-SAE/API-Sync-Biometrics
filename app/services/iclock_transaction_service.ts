@@ -119,8 +119,8 @@ export default class IClockTransactionService {
   async getTransactionsToAsync(page: number = 1, limit: number = 200, filters: any = {}) {
     try {
       // set from env env.get('HOURS_DIFF') to integer
-      const hoursDiff = Number(env.get('HOURS_DIFF'))
-      const hoursLocal = Number(env.get('HOURS_LOCAL'))
+      const hoursDiff = Number(env.get('HOURS_DIFF')) || 0
+      const hoursLocal = Number(env.get('HOURS_LOCAL')) || 0
       // Consulta para obtener el total de registros
       let countQuery = `
         SELECT
