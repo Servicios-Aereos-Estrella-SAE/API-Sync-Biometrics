@@ -222,7 +222,7 @@ export default class IClockTransactionService {
         pageSize: limit,
         offset: (page - 1) * limit,
         empId: filters.empId,
-        assistDate: filterInitialDate,
+        assistDate: stringDateVal,
         endAssistsDate: filters.endAssistsDate,
         hoursDiff,
         hoursLocal,
