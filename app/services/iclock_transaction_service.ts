@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import IClockTransaction from '#models/iclock_transaction'
 import db from '@adonisjs/lucid/services/db'
 import { DateTime } from 'luxon'
@@ -147,6 +148,9 @@ export default class IClockTransactionService {
 
       const stringDateVal = `${filters.assistDate}`.split('T')[0]
       const stringDate = `${stringDateVal}T00:00:00.000-06:00`
+      console.info('🚀 -------------------------------------------------------------------------------------🚀')
+      console.info('🚀 ~ IClockTransactionService ~ getTransactionsToAsync ~ stringDateVal:', stringDateVal)
+      console.info('🚀 -------------------------------------------------------------------------------------🚀')
       const time = DateTime.fromISO(stringDate, { setZone: true })
       const timeCST = time.setZone('America/Mexico_City')
       const filterInitialDate = timeCST.toFormat('yyyy-LL-dd HH:mm:ss')
@@ -154,7 +158,7 @@ export default class IClockTransactionService {
       // Aplicando filtros a la consulta de conteo
       let countParams = {
         empId: filters.empId,
-        assistDate: filterInitialDate,
+        assistDate: stringDateVal,
         endAssistsDate: new Date(filters.endAssistsDate),
         hoursDiff,
         hoursLocal,
