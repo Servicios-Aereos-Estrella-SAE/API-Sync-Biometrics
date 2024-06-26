@@ -251,6 +251,12 @@ export default class IClockTransactionService {
       dataParams.offset = offset
 
       const paginatedResults = await db.rawQuery(dataQuery, dataParams)
+      console.info('🚀 -------------------------------------------------------------------------------🚀')
+      console.info('🚀 ~ IClockTransactionService ~ getTransactionsToAsync ~ dataParams:', dataParams)
+      console.info('🚀 -------------------------------------------------------------------------------🚀')
+      console.info('🚀 -----------------------------------------------------------------------------🚀')
+      console.info('🚀 ~ IClockTransactionService ~ getTransactionsToAsync ~ dataQuery:', dataQuery)
+      console.info('🚀 -----------------------------------------------------------------------------🚀')
       // Devolver los resultados con información de paginación
       const response = {
         pagination: {
