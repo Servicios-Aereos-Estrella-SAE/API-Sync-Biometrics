@@ -147,32 +147,32 @@ export default class IClockTransactionService {
       `
 
       const stringDateVal = `${filters.assistDate}`.split('T')[0]
-      // const stringDate = `${stringDateVal}T00:00:00.000-06:00`
-      console.info('🚀 -------------------------------------------------------------------------------------🚀')
-      console.info('🚀 ~ IClockTransactionService ~ getTransactionsToAsync ~ stringDateVal:', stringDateVal)
-      console.info('🚀 -------------------------------------------------------------------------------------🚀')
-      // const time = DateTime.fromISO(stringDate, { setZone: true })
-      // const timeCST = time.setZone('America/Mexico_City')
-      // const filterInitialDate = timeCST.toFormat('yyyy-LL-dd HH:mm:ss')
+      const stringDate = `${stringDateVal}T00:00:00.000-06:00`
+      const time = DateTime.fromISO(stringDate, { setZone: true })
+      const timeCST = time.setZone('America/Mexico_City')
+      const filterInitialDate = timeCST.toFormat('yyyy-LL-dd HH:mm:ss')
+      console.info('🚀 ---------------------------------------------------------------------------------------------🚀')
+      console.info('🚀 ~ IClockTransactionService ~ getTransactionsToAsync ~ filterInitialDate:', filterInitialDate)
+      console.info('🚀 ---------------------------------------------------------------------------------------------🚀')
 
       // Aplicando filtros a la consulta de conteo
       let countParams = {
         empId: filters.empId,
-        assistDate: stringDateVal.toString(),
+        assistDate: filterInitialDate.toString(),
         endAssistsDate: new Date(filters.endAssistsDate),
         hoursDiff,
         hoursLocal,
       }
 
       if (countParams.assistDate) {
-        countQuery += ` WHERE (date(ict.punch_time - interval '${hoursDiff} hours')) >= :assistDate`
+        countQuery += ` WHERE ict.punch_time >= :assistDate`
       }
 
-      if (filters.endAssistsDate) {
-        countQuery += countParams.endAssistsDate
-          ? ` AND (date(ict.punch_time - interval '${hoursDiff} hours')) <= :endAssistsDate`
-          : ` AND (date(ict.punch_time - interval '${hoursDiff} hours')) <= :endAssistsDate`
-      }
+      // if (filters.endAssistsDate) {
+      //   countQuery += countParams.endAssistsDate
+      //     ? ` AND (date(ict.punch_time - interval '${hoursDiff} hours')) <= :endAssistsDate`
+      //     : ` AND (date(ict.punch_time - interval '${hoursDiff} hours')) <= :endAssistsDate`
+      // }
 
       if (countParams.empId) {
         countQuery += ` AND ict.emp_id = :empId`
@@ -222,21 +222,21 @@ export default class IClockTransactionService {
         pageSize: limit,
         offset: (page - 1) * limit,
         empId: filters.empId,
-        assistDate: stringDateVal.toString(),
+        assistDate: filterInitialDate.toString(),
         endAssistsDate: filters.endAssistsDate,
         hoursDiff,
         hoursLocal,
       }
 
       if (dataParams.assistDate) {
-        dataQuery += ` WHERE (date(ict.punch_time - interval '${hoursDiff} hours')) >= :assistDate`
+        dataQuery += ` WHERE ict.punch_time >= :assistDate`
       }
 
-      if (dataParams.endAssistsDate) {
-        dataQuery += dataParams.assistDate
-          ? ` AND (date(ict.punch_time - interval '${hoursDiff} hours')) <= :endAssistsDate`
-          : ` AND (date(ict.punch_time - interval '${hoursDiff} hours')) <= :endAssistsDate`
-      }
+      // if (dataParams.endAssistsDate) {
+      //   dataQuery += dataParams.assistDate
+      //     ? ` AND (date(ict.punch_time - interval '${hoursDiff} hours')) <= :endAssistsDate`
+      //     : ` AND (date(ict.punch_time - interval '${hoursDiff} hours')) <= :endAssistsDate`
+      // }
 
       if (dataParams.empId) {
         dataQuery += ` AND ict.emp_id = :empId`
