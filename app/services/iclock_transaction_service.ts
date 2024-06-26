@@ -158,7 +158,7 @@ export default class IClockTransactionService {
       // Aplicando filtros a la consulta de conteo
       let countParams = {
         empId: filters.empId,
-        assistDate: stringDateVal,
+        assistDate: stringDateVal.toString(),
         endAssistsDate: new Date(filters.endAssistsDate),
         hoursDiff,
         hoursLocal,
@@ -222,14 +222,14 @@ export default class IClockTransactionService {
         pageSize: limit,
         offset: (page - 1) * limit,
         empId: filters.empId,
-        assistDate: stringDateVal,
+        assistDate: stringDateVal.toString(),
         endAssistsDate: filters.endAssistsDate,
         hoursDiff,
         hoursLocal,
       }
 
       if (dataParams.assistDate) {
-        dataQuery += ` WHERE (date(ict.punch_time - interval '${hoursDiff} hours')) >= timestamp '2024-06-25' AT TIME ZONE 'UTC'`
+        dataQuery += ` WHERE (date(ict.punch_time - interval '${hoursDiff} hours')) >= :assistDate`
       }
 
       if (dataParams.endAssistsDate) {
