@@ -131,9 +131,9 @@ export default class IClockTransactionService {
         INNER JOIN (
           SELECT
             emp_id,
-            DATE(punch_time - interval '${hoursDiff} hours') AS punch_date,
-            MIN(punch_time - interval '${hoursDiff} hours') AS first_punch,
-            MAX(punch_time - interval '${hoursDiff} hours') AS last_punch
+            DATE(punch_time AT TIME ZONE 'America/Mexico_City') AS punch_date,
+            MIN(punch_time AT TIME ZONE 'America/Mexico_City') AS first_punch,
+            MAX(punch_time AT TIME ZONE 'America/Mexico_City') AS last_punch
           FROM
             iclock_transaction
           GROUP BY
@@ -142,8 +142,8 @@ export default class IClockTransactionService {
         ) sub
         ON
           ict.emp_id = sub.emp_id
-          AND DATE(ict.punch_time - interval '${hoursDiff} hours') = (sub.punch_date)
-          AND ((ict.punch_time - interval '${hoursDiff} hours') = sub.first_punch OR (ict.punch_time - interval '${hoursDiff} hours') = sub.last_punch)
+          AND DATE(ict.punch_time AT TIME ZONE 'America/Mexico_City') = (sub.punch_date)
+          AND ((ict.punch_time AT TIME ZONE 'America/Mexico_City') = sub.first_punch OR (ict.punch_time AT TIME ZONE 'America/Mexico_City') = sub.last_punch)
       `
 
       const stringDateVal = `${filters.assistDate}`.split('T')[0]
@@ -151,9 +151,6 @@ export default class IClockTransactionService {
       const time = DateTime.fromISO(stringDate, { setZone: true })
       const timeCST = time.setZone('America/Mexico_City')
       const filterInitialDate = timeCST.toFormat('yyyy-LL-dd HH:mm:ss')
-      console.info('🚀 ---------------------------------------------------------------------------------------------🚀')
-      console.info('🚀 ~ IClockTransactionService ~ getTransactionsToAsync ~ filterInitialDate:', filterInitialDate)
-      console.info('🚀 ---------------------------------------------------------------------------------------------🚀')
 
       // Aplicando filtros a la consulta de conteo
       let countParams = {
@@ -165,14 +162,8 @@ export default class IClockTransactionService {
       }
 
       if (countParams.assistDate) {
-        countQuery += ` WHERE ict.punch_time >= DATE('${countParams.assistDate}')`
+        countQuery += ` WHERE ict.punch_time AT TIME ZONE 'America/Mexico_City' >= DATE('${stringDateVal}T00:00:00.000-06:00' AT TIME ZONE 'America/Mexico_City')`
       }
-
-      // if (filters.endAssistsDate) {
-      //   countQuery += countParams.endAssistsDate
-      //     ? ` AND (date(ict.punch_time - interval '${hoursDiff} hours')) <= :endAssistsDate`
-      //     : ` AND (date(ict.punch_time - interval '${hoursDiff} hours')) <= :endAssistsDate`
-      // }
 
       if (countParams.empId) {
         countQuery += ` AND ict.emp_id = :empId`
@@ -194,17 +185,17 @@ export default class IClockTransactionService {
         ict.emp_id,
         ict.terminal_id,
         punch_time AS punch_time_origin_real,
-        ((ict.punch_time - interval '${hoursDiff} hours')) AS punch_time,
-        ((ict.punch_time - interval '${hoursDiff + hoursLocal} hours' )) AS punch_time_local,
-        (ict.punch_time - interval '${hoursLocal} hours') AS punch_time_origin
+        ict.punch_time AS punch_time,
+        ict.punch_time AS punch_time_local,
+        ict.punch_time AS punch_time_origin
       FROM
         iclock_transaction ict
       INNER JOIN (
         SELECT
           emp_id,
-          DATE(punch_time - interval '${hoursDiff} hours') AS punch_date,
-          MIN(punch_time - interval '${hoursDiff} hours') AS first_punch,
-          MAX(punch_time - interval '${hoursDiff} hours') AS last_punch
+          DATE(punch_time AT TIME ZONE 'America/Mexico_City') AS punch_date,
+          MIN(punch_time AT TIME ZONE 'America/Mexico_City') AS first_punch,
+          MAX(punch_time AT TIME ZONE 'America/Mexico_City') AS last_punch
         FROM
           iclock_transaction
         GROUP BY
@@ -213,8 +204,8 @@ export default class IClockTransactionService {
       ) sub
       ON
         ict.emp_id = sub.emp_id
-        AND DATE(ict.punch_time - interval '${hoursDiff} hours') = (sub.punch_date)
-        AND (ict.punch_time - interval '${hoursDiff} hours' = sub.first_punch OR ict.punch_time - interval '${hoursDiff} hours' = sub.last_punch)
+        AND DATE(ict.punch_time AT TIME ZONE 'America/Mexico_City') = (sub.punch_date)
+        AND (ict.punch_time AT TIME ZONE 'America/Mexico_City' = sub.first_punch OR ict.punch_time AT TIME ZONE 'America/Mexico_City' = sub.last_punch)
     `
 
       // Aplicando filtros a la consulta de datos
@@ -229,14 +220,8 @@ export default class IClockTransactionService {
       }
 
       if (dataParams.assistDate) {
-        dataQuery += ` WHERE ict.punch_time >= DATE('${dataParams.assistDate}')`
+        dataQuery += ` WHERE ict.punch_time AT TIME ZONE 'America/Mexico_City' >= DATE('${stringDateVal}T00:00:00.000-06:00' AT TIME ZONE 'America/Mexico_City')`
       }
-
-      // if (dataParams.endAssistsDate) {
-      //   dataQuery += dataParams.assistDate
-      //     ? ` AND (date(ict.punch_time - interval '${hoursDiff} hours')) <= :endAssistsDate`
-      //     : ` AND (date(ict.punch_time - interval '${hoursDiff} hours')) <= :endAssistsDate`
-      // }
 
       if (dataParams.empId) {
         dataQuery += ` AND ict.emp_id = :empId`
@@ -251,12 +236,6 @@ export default class IClockTransactionService {
       dataParams.offset = offset
 
       const paginatedResults = await db.rawQuery(dataQuery, dataParams)
-      console.info('🚀 -------------------------------------------------------------------------------🚀')
-      console.info('🚀 ~ IClockTransactionService ~ getTransactionsToAsync ~ dataParams:', dataParams)
-      console.info('🚀 -------------------------------------------------------------------------------🚀')
-      console.info('🚀 -----------------------------------------------------------------------------🚀')
-      console.info('🚀 ~ IClockTransactionService ~ getTransactionsToAsync ~ dataQuery:', dataQuery)
-      console.info('🚀 -----------------------------------------------------------------------------🚀')
       // Devolver los resultados con información de paginación
       const response = {
         pagination: {
