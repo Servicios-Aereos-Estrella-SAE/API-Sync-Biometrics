@@ -165,7 +165,7 @@ export default class IClockTransactionService {
       }
 
       if (countParams.assistDate) {
-        countQuery += ` WHERE ict.punch_time >= DATE(:assistDate)`
+        countQuery += ` WHERE ict.punch_time >= DATE('${countParams.assistDate}')`
       }
 
       // if (filters.endAssistsDate) {
@@ -229,7 +229,7 @@ export default class IClockTransactionService {
       }
 
       if (dataParams.assistDate) {
-        dataQuery += ` WHERE ict.punch_time >= DATE(:assistDate)`
+        dataQuery += ` WHERE ict.punch_time >= DATE('${dataParams.assistDate}')`
       }
 
       // if (dataParams.endAssistsDate) {
