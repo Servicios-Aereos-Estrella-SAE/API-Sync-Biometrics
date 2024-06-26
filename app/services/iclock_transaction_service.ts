@@ -229,7 +229,7 @@ export default class IClockTransactionService {
       }
 
       if (dataParams.assistDate) {
-        dataQuery += ` WHERE (date(ict.punch_time - interval '${hoursDiff} hours')) >= :assistDate`
+        dataQuery += ` WHERE (date(ict.punch_time - interval '${hoursDiff} hours')) >= timestamp :assistDate AT TIME ZONE 'America/Mexico_City'`
       }
 
       if (dataParams.endAssistsDate) {
