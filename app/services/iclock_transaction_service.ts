@@ -229,7 +229,7 @@ export default class IClockTransactionService {
       }
 
       if (dataParams.assistDate) {
-        dataQuery += ` WHERE (date(ict.punch_time - interval '${hoursDiff} hours')) >= timestamp '2024-06-25' AT TIME ZONE 'America/Mexico_City'`
+        dataQuery += ` WHERE (date(ict.punch_time - interval '${hoursDiff} hours')) >= timestamp '2024-06-25' AT TIME ZONE 'UTC'`
       }
 
       if (dataParams.endAssistsDate) {
