@@ -149,7 +149,7 @@ export default class IClockTransactionService {
       const stringDateVal = `${filters.assistDate}`.split('T')[0]
       const stringDate = `${stringDateVal}T00:00:00.000-06:00`
       const time = DateTime.fromISO(stringDate, { setZone: true })
-      const timeCST = time.setZone('America/Mexico_City')
+      const timeCST = time.setZone('UTC')
       const filterInitialDate = timeCST.toFormat('yyyy-LL-dd HH:mm:ss')
       console.info('🚀 ---------------------------------------------------------------------------------------------🚀')
       console.info('🚀 ~ IClockTransactionService ~ getTransactionsToAsync ~ filterInitialDate:', filterInitialDate)
