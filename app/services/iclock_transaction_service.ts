@@ -89,9 +89,7 @@ export default class IClockTransactionService {
         INNER JOIN (
           SELECT
             emp_id,
-            DATE(punch_time AT TIME ZONE 'America/Mexico_City') AS punch_date,
-            MIN(punch_time AT TIME ZONE 'America/Mexico_City') AS first_punch,
-            MAX(punch_time AT TIME ZONE 'America/Mexico_City') AS last_punch
+            DATE(punch_time AT TIME ZONE 'America/Mexico_City') AS punch_date
           FROM
             iclock_transaction
           GROUP BY
@@ -101,7 +99,6 @@ export default class IClockTransactionService {
         ON
           ict.emp_id = sub.emp_id
           AND DATE(ict.punch_time AT TIME ZONE 'America/Mexico_City') = (sub.punch_date)
-          AND ((ict.punch_time AT TIME ZONE 'America/Mexico_City') = sub.first_punch OR (ict.punch_time AT TIME ZONE 'America/Mexico_City') = sub.last_punch)
       `
 
       const stringDateVal = `${filters.assistDate}`.split('T')[0]
@@ -151,9 +148,7 @@ export default class IClockTransactionService {
       INNER JOIN (
         SELECT
           emp_id,
-          DATE(punch_time AT TIME ZONE 'America/Mexico_City') AS punch_date,
-          MIN(punch_time AT TIME ZONE 'America/Mexico_City') AS first_punch,
-          MAX(punch_time AT TIME ZONE 'America/Mexico_City') AS last_punch
+          DATE(punch_time AT TIME ZONE 'America/Mexico_City') AS punch_date
         FROM
           iclock_transaction
         GROUP BY
@@ -163,7 +158,6 @@ export default class IClockTransactionService {
       ON
         ict.emp_id = sub.emp_id
         AND DATE(ict.punch_time AT TIME ZONE 'America/Mexico_City') = (sub.punch_date)
-        AND (ict.punch_time AT TIME ZONE 'America/Mexico_City' = sub.first_punch OR ict.punch_time AT TIME ZONE 'America/Mexico_City' = sub.last_punch)
     `
 
       // Aplicando filtros a la consulta de datos
