@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import IClockTransaction from '#models/iclock_transaction'
 import db from '@adonisjs/lucid/services/db'
 import { DateTime } from 'luxon'
@@ -59,6 +60,7 @@ export default class IClockTransactionService {
     }
   }
 
+
   /**
    * Fetches and lists transactions with pagination and optional filtering.
    *
@@ -72,56 +74,13 @@ export default class IClockTransactionService {
    *
    * @throws {Error} - Throws an error if there is an issue with the query execution.
    */
-  async getTransactionsToAsync2(page: number = 1, limit: number = 10, filters: any = {}) {
-    try {
-      // Initialize the query for the IClockTransaction model
-      const query = db
-        .from('iclock_transaction')
-        .select(
-          'id',
-          'emp_code',
-          'terminal_sn',
-          'terminal_alias',
-          'area_alias',
-          'longitude',
-          'latitude',
-          'upload_time',
-          'emp_id',
-          'terminal_id',
-          db.raw(`(punch_time - interval '13 hours') as punch_time_local`)
-        )
-        .orderBy('punch_time_local', 'asc')
-      // // Apply department ID filter if provided
-      if (filters.empId) {
-        query.where('emp_id', filters.empId)
-      }
-
-      if (filters.assistDate) {
-        const dateTimeAssist = new Date(filters.assistDate)
-        query.where(db.raw(`(punch_time - interval '13 hours')`), '>=', dateTimeAssist)
-      }
-
-      if (filters.endAssistsDate) {
-        // query.where('punch_time_local', '<=', filters.endAssistsDate)
-      }
-      // Execute the query with pagination and return the results
-      const result = await query.paginate(page, limit)
-      // map to convert to utz timezone, first set origin zone GMT+7
-      // result.forEach((item) => {
-      //   item.punchTime = item.punchTime.minus({ hours: 6 })
-      // })
-      return result
-    } catch (error) {
-      throw new Error(error)
-    }
-  }
 
   async getTransactionsToAsync(page: number = 1, limit: number = 200, filters: any = {}) {
     try {
       // set from env env.get('HOURS_DIFF') to integer
       const hoursDiff = Number(env.get('HOURS_DIFF')) || 0
       const hoursLocal = Number(env.get('HOURS_LOCAL')) || 0
-      // Consulta para obtener el total de registros
+      // Query to get total count
       let countQuery = `
         SELECT
           COUNT(*) AS total
@@ -130,9 +89,7 @@ export default class IClockTransactionService {
         INNER JOIN (
           SELECT
             emp_id,
-            DATE(punch_time - interval '${hoursDiff} hours') AS punch_date,
-            MIN(punch_time - interval '${hoursDiff} hours') AS first_punch,
-            MAX(punch_time - interval '${hoursDiff} hours') AS last_punch
+            DATE(punch_time AT TIME ZONE 'America/Mexico_City') AS punch_date
           FROM
             iclock_transaction
           GROUP BY
@@ -141,8 +98,7 @@ export default class IClockTransactionService {
         ) sub
         ON
           ict.emp_id = sub.emp_id
-          AND DATE(ict.punch_time - interval '${hoursDiff} hours') = (sub.punch_date)
-          AND ((ict.punch_time - interval '${hoursDiff} hours') = sub.first_punch OR (ict.punch_time - interval '${hoursDiff} hours') = sub.last_punch)
+          AND DATE(ict.punch_time AT TIME ZONE 'America/Mexico_City') = (sub.punch_date)
       `
 
       const stringDateVal = `${filters.assistDate}`.split('T')[0]
@@ -151,23 +107,17 @@ export default class IClockTransactionService {
       const timeCST = time.setZone('America/Mexico_City')
       const filterInitialDate = timeCST.toFormat('yyyy-LL-dd HH:mm:ss')
 
-      // Aplicando filtros a la consulta de conteo
+      // Query to get total count
       let countParams = {
         empId: filters.empId,
-        assistDate: filterInitialDate,
+        assistDate: filterInitialDate.toString(),
         endAssistsDate: new Date(filters.endAssistsDate),
         hoursDiff,
         hoursLocal,
       }
 
       if (countParams.assistDate) {
-        countQuery += ` WHERE (date(ict.punch_time - interval '${hoursDiff} hours')) >= :assistDate`
-      }
-
-      if (filters.endAssistsDate) {
-        countQuery += countParams.endAssistsDate
-          ? ` AND (date(ict.punch_time - interval '${hoursDiff} hours')) <= :endAssistsDate`
-          : ` AND (date(ict.punch_time - interval '${hoursDiff} hours')) <= :endAssistsDate`
+        countQuery += ` WHERE ict.punch_time AT TIME ZONE 'America/Mexico_City' >= DATE('${stringDateVal}T00:00:00.000-06:00' AT TIME ZONE 'America/Mexico_City')`
       }
 
       if (countParams.empId) {
@@ -176,7 +126,7 @@ export default class IClockTransactionService {
       const totalResult = await db.rawQuery(countQuery, countParams)
       const totalItems = totalResult.rows[0].total
 
-      // Consulta para obtener los datos paginados
+      // Query to get paginated data
       let dataQuery = `
       SELECT
         ict.id,
@@ -190,17 +140,15 @@ export default class IClockTransactionService {
         ict.emp_id,
         ict.terminal_id,
         punch_time AS punch_time_origin_real,
-        ((ict.punch_time - interval '${hoursDiff} hours')) AS punch_time,
-        ((ict.punch_time - interval '${hoursDiff + hoursLocal} hours' )) AS punch_time_local,
-        (ict.punch_time - interval '${hoursLocal} hours') AS punch_time_origin
+        ict.punch_time AS punch_time,
+        ict.punch_time AS punch_time_local,
+        ict.punch_time AS punch_time_origin
       FROM
         iclock_transaction ict
       INNER JOIN (
         SELECT
           emp_id,
-          DATE(punch_time - interval '${hoursDiff} hours') AS punch_date,
-          MIN(punch_time - interval '${hoursDiff} hours') AS first_punch,
-          MAX(punch_time - interval '${hoursDiff} hours') AS last_punch
+          DATE(punch_time AT TIME ZONE 'America/Mexico_City') AS punch_date
         FROM
           iclock_transaction
         GROUP BY
@@ -209,8 +157,7 @@ export default class IClockTransactionService {
       ) sub
       ON
         ict.emp_id = sub.emp_id
-        AND DATE(ict.punch_time - interval '${hoursDiff} hours') = (sub.punch_date)
-        AND (ict.punch_time - interval '${hoursDiff} hours' = sub.first_punch OR ict.punch_time - interval '${hoursDiff} hours' = sub.last_punch)
+        AND DATE(ict.punch_time AT TIME ZONE 'America/Mexico_City') = (sub.punch_date)
     `
 
       // Aplicando filtros a la consulta de datos
@@ -218,36 +165,30 @@ export default class IClockTransactionService {
         pageSize: limit,
         offset: (page - 1) * limit,
         empId: filters.empId,
-        assistDate: filterInitialDate,
+        assistDate: filterInitialDate.toString(),
         endAssistsDate: filters.endAssistsDate,
         hoursDiff,
         hoursLocal,
       }
 
       if (dataParams.assistDate) {
-        dataQuery += ` WHERE (date(ict.punch_time - interval '${hoursDiff} hours')) >= :assistDate`
-      }
-
-      if (dataParams.endAssistsDate) {
-        dataQuery += dataParams.assistDate
-          ? ` AND (date(ict.punch_time - interval '${hoursDiff} hours')) <= :endAssistsDate`
-          : ` AND (date(ict.punch_time - interval '${hoursDiff} hours')) <= :endAssistsDate`
+        dataQuery += ` WHERE ict.punch_time AT TIME ZONE 'America/Mexico_City' >= DATE('${stringDateVal}T00:00:00.000-06:00' AT TIME ZONE 'America/Mexico_City')`
       }
 
       if (dataParams.empId) {
         dataQuery += ` AND ict.emp_id = :empId`
       }
 
-      // Calcular el offset para la paginación
+      // Calculate the offset for pagination
       const offset = (page - 1) * limit
 
-      // Añadir paginación a la consulta de datos
+      // Add pagination to the data query
       dataQuery += ` ORDER BY ict.punch_time ASC LIMIT :pageSize OFFSET :offset`
       dataParams.pageSize = limit
       dataParams.offset = offset
 
       const paginatedResults = await db.rawQuery(dataQuery, dataParams)
-      // Devolver los resultados con información de paginación
+      // Return the results with pagination information
       const response = {
         pagination: {
           totalItems,
