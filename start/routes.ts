@@ -21,6 +21,11 @@ router.get(
   'api/v1/transactions-async',
   '#controllers/iclock_transactions_controller.getAsyncAssists'
 )
+router.get(
+  'api/v1/transactions-by-employee-async',
+  '#controllers/iclock_transactions_controller.getAsyncAssistsByEmployee'
+)
+
 router.get('api/v1/departments', '#controllers/personnel_departments_controller.index')
 router.get('api/v1/positions', '#controllers/personnel_positions_controller.index')
 router.get('api/v1/employees', '#controllers/personnel_employees_controller.index')
