@@ -148,4 +148,91 @@ export default class IClockTransactionsController {
     // Fetch the list of transactions using the service class, applying pagination and filters
     return i_clock_terminal_services.getTransactionsToAsync(page, limit, filters)
   }
+
+  /**
+   * @swagger
+   * /api/v1/transactions-by-employee-async:
+   *   get:
+   *     tags:
+   *       - Transactions
+   *     summary: Get all transactions by employee
+   *     parameters:
+   *       - name: page
+   *         in: query
+   *         required: false
+   *         description: The page number for pagination
+   *         schema:
+   *           type: integer
+   *       - name: limit
+   *         in: query
+   *         required: false
+   *         description: The number of records per page
+   *         schema:
+   *           type: integer
+   *       - name: empCode
+   *         in: query
+   *         required: true
+   *         description: The employee id to filter by
+   *         schema:
+   *          type: integer
+   *       - name: assistStartDate
+   *         in: query
+   *         required: true
+   *         description: The assist date to filter by format year month day
+   *         schema:
+   *           type: string
+   *           format: date
+   *       - name: assistEndDate
+   *         in: query
+   *         required: true
+   *         description: The assist date to filter by format year month day
+   *         schema:
+   *           type: string
+   *           format: date
+   *     responses:
+   *       200:
+   *         description: Returns all iclock transactions
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: array
+   *               items:
+   *                 $ref: '#/components/schemas/IClockTransaction'
+   */
+  /**
+   * Controller method to handle fetching and listing transactions.
+   *
+   * @param {HttpContext} context - The HTTP context object containing the request.
+   * @param {IClockTransactionService} i_clock_terminal_services - The service class for iClock transaction operations.
+   *
+   * @returns {Promise<Response>} - The JSON response containing the list of transactions.
+   */
+  @inject()
+  getAsyncAssistsByEmployee(
+    { request, response }: HttpContext,
+    i_clock_terminal_services: IClockTransactionService
+  ) {
+    // Extract pagination parameters from the request, with defaults
+    const page = request.input('page', 1)
+    const limit = request.input('limit', 10)
+    // Extract filtering parameters from the request
+    // valid if hast empId, assistStartDate and assistEndDate
+    if (
+      !request.input('empCode') ||
+      !request.input('assistStartDate') ||
+      !request.input('assistEndDate')
+    ) {
+      return response
+        .status(400)
+        .json({ message: 'empCode, assistStartDate and assistEndDate are required' })
+    }
+
+    const filters = {
+      empCode: request.input('empCode'),
+      assistStartDate: request.input('assistStartDate'),
+      assistEndDate: request.input('assistEndDate'),
+    }
+    // Fetch the list of transactions using the service class, applying pagination and filters
+    return i_clock_terminal_services.getTransactionsByEmployeeAsync(page, limit, filters)
+  }
 }
