@@ -83,6 +83,9 @@ export default class PersonnelEmployeeService {
     return await query
       .preload('personnelDepartment')
       .preload('personnelPosition')
+      .preload('personnelEmployeeArea', (areaQuery) => {
+        areaQuery.preload('personnelArea')
+      })
       .paginate(page, limit)
   }
 }
