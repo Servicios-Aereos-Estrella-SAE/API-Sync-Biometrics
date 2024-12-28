@@ -4,6 +4,7 @@ import type { HasMany, BelongsTo } from '@adonisjs/lucid/types/relations'
 import IClockTransaction from '#models/iclock_transaction'
 import PersonnelDepartment from '#models/personnel_department'
 import PersonnelPosition from '#models/personnel_position'
+import PersonnelEmployeeArea from './personnel_employee_area.js'
 
 /**
  * @swagger
@@ -319,4 +320,7 @@ export default class PersonnelEmployee extends BaseModel {
 
   @hasMany(() => IClockTransaction, { foreignKey: 'empId' })
   declare transactions: HasMany<typeof IClockTransaction>
+
+  @hasMany(() => PersonnelEmployeeArea, { foreignKey: 'employeeId' })
+  declare personnelEmployeeArea: HasMany<typeof PersonnelEmployeeArea>
 }
