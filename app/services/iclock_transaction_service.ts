@@ -89,7 +89,7 @@ export default class IClockTransactionService {
         INNER JOIN (
           SELECT
             emp_id,
-            DATE(punch_time AT TIME ZONE 'America/Mexico_City') AS punch_date
+            DATE(punch_time AT TIME ZONE 'UTC-6') AS punch_date
           FROM
             iclock_transaction
           GROUP BY
@@ -98,13 +98,13 @@ export default class IClockTransactionService {
         ) sub
         ON
           ict.emp_id = sub.emp_id
-          AND DATE(ict.punch_time AT TIME ZONE 'America/Mexico_City') = (sub.punch_date)
+          AND DATE(ict.punch_time AT TIME ZONE 'UTC-6') = (sub.punch_date)
       `
 
       const stringDateVal = `${filters.assistDate}`.split('T')[0]
       const stringDate = `${stringDateVal}T00:00:00.000-06:00`
       const time = DateTime.fromISO(stringDate, { setZone: true })
-      const timeCST = time.setZone('America/Mexico_City')
+      const timeCST = time.setZone('UTC-6')
       const filterInitialDate = timeCST.toFormat('yyyy-LL-dd HH:mm:ss')
 
       // Query to get total count
@@ -117,7 +117,7 @@ export default class IClockTransactionService {
       }
 
       if (countParams.assistDate) {
-        countQuery += ` WHERE ict.punch_time AT TIME ZONE 'America/Mexico_City' >= DATE('${stringDateVal}T00:00:00.000-06:00' AT TIME ZONE 'America/Mexico_City')`
+        countQuery += ` WHERE ict.punch_time AT TIME ZONE 'UTC-6' >= DATE('${stringDateVal}T00:00:00.000-06:00' AT TIME ZONE 'UTC-6')`
       }
 
       if (countParams.empId) {
@@ -148,7 +148,7 @@ export default class IClockTransactionService {
       INNER JOIN (
         SELECT
           emp_id,
-          DATE(punch_time AT TIME ZONE 'America/Mexico_City') AS punch_date
+          DATE(punch_time AT TIME ZONE 'UTC-6') AS punch_date
         FROM
           iclock_transaction
         GROUP BY
@@ -157,7 +157,7 @@ export default class IClockTransactionService {
       ) sub
       ON
         ict.emp_id = sub.emp_id
-        AND DATE(ict.punch_time AT TIME ZONE 'America/Mexico_City') = (sub.punch_date)
+        AND DATE(ict.punch_time AT TIME ZONE 'UTC-6') = (sub.punch_date)
     `
 
       // Aplicando filtros a la consulta de datos
@@ -172,7 +172,7 @@ export default class IClockTransactionService {
       }
 
       if (dataParams.assistDate) {
-        dataQuery += ` WHERE ict.punch_time AT TIME ZONE 'America/Mexico_City' >= DATE('${stringDateVal}T00:00:00.000-06:00' AT TIME ZONE 'America/Mexico_City')`
+        dataQuery += ` WHERE ict.punch_time AT TIME ZONE 'UTC-6' >= DATE('${stringDateVal}T00:00:00.000-06:00' AT TIME ZONE 'UTC-6')`
       }
 
       if (dataParams.empId) {
@@ -234,7 +234,7 @@ export default class IClockTransactionService {
         INNER JOIN (
           SELECT
             emp_id,
-            DATE(punch_time AT TIME ZONE 'America/Mexico_City') AS punch_date
+            DATE(punch_time AT TIME ZONE 'UTC-6') AS punch_date
           FROM
             iclock_transaction
           GROUP BY
@@ -243,19 +243,19 @@ export default class IClockTransactionService {
         ) sub
         ON
           ict.emp_id = sub.emp_id
-          AND DATE(ict.punch_time AT TIME ZONE 'America/Mexico_City') = (sub.punch_date)
+          AND DATE(ict.punch_time AT TIME ZONE 'UTC-6') = (sub.punch_date)
       `
 
       const stringDateStartVal = `${filters.assistStartDate}`.split('T')[0]
       const stringStartDate = `${stringDateStartVal}T00:00:00.000-06:00`
       const timeStart = DateTime.fromISO(stringStartDate, { setZone: true })
-      const timeStartCST = timeStart.setZone('America/Mexico_City')
+      const timeStartCST = timeStart.setZone('UTC-6')
       const filterInitialStartDate = timeStartCST.toFormat('yyyy-LL-dd HH:mm:ss')
 
       const stringDateEndVal = `${filters.assistEndDate}`.split('T')[0]
       const stringEndDate = `${stringDateEndVal}T00:00:00.000-06:00`
       const timeEnd = DateTime.fromISO(stringEndDate, { setZone: true })
-      const timeEndCST = timeEnd.setZone('America/Mexico_City')
+      const timeEndCST = timeEnd.setZone('UTC-6')
       const filterInitialEndDate = timeEndCST.toFormat('yyyy-LL-dd HH:mm:ss')
 
 
@@ -268,7 +268,7 @@ export default class IClockTransactionService {
         hoursLocal,
       }
 
-      countQuery += ` WHERE ict.punch_time AT TIME ZONE 'America/Mexico_City' <= DATE('${stringDateEndVal}T00:00:00.000-06:00' AT TIME ZONE 'America/Mexico_City') AND ict.punch_time AT TIME ZONE 'America/Mexico_City' >= DATE('${stringDateStartVal}T00:00:00.000-06:00' AT TIME ZONE 'America/Mexico_City')`
+      countQuery += ` WHERE ict.punch_time AT TIME ZONE 'UTC-6' <= DATE('${stringDateEndVal}T00:00:00.000-06:00' AT TIME ZONE 'UTC-6') AND ict.punch_time AT TIME ZONE 'UTC-6' >= DATE('${stringDateStartVal}T00:00:00.000-06:00' AT TIME ZONE 'UTC-6')`
 
       if (countParams.empCode) {
         countQuery += ` AND ict.emp_code = :empCode`
@@ -298,7 +298,7 @@ export default class IClockTransactionService {
       INNER JOIN (
         SELECT
           emp_id,
-          DATE(punch_time AT TIME ZONE 'America/Mexico_City') AS punch_date
+          DATE(punch_time AT TIME ZONE 'UTC-6') AS punch_date
         FROM
           iclock_transaction
         GROUP BY
@@ -307,7 +307,7 @@ export default class IClockTransactionService {
       ) sub
       ON
         ict.emp_id = sub.emp_id
-        AND DATE(ict.punch_time AT TIME ZONE 'America/Mexico_City') = (sub.punch_date)
+        AND DATE(ict.punch_time AT TIME ZONE 'UTC-6') = (sub.punch_date)
     `
 
       // Aplicando filtros a la consulta de datos
@@ -321,7 +321,7 @@ export default class IClockTransactionService {
         hoursLocal,
       }
 
-      dataQuery += ` WHERE ict.punch_time AT TIME ZONE 'America/Mexico_City' <= DATE('${stringDateEndVal}T00:00:00.000-06:00' AT TIME ZONE 'America/Mexico_City') AND ict.punch_time AT TIME ZONE 'America/Mexico_City' >= DATE('${stringDateStartVal}T00:00:00.000-06:00' AT TIME ZONE 'America/Mexico_City')`
+      dataQuery += ` WHERE ict.punch_time AT TIME ZONE 'UTC-6' <= DATE('${stringDateEndVal}T00:00:00.000-06:00' AT TIME ZONE 'UTC-6') AND ict.punch_time AT TIME ZONE 'UTC-6' >= DATE('${stringDateStartVal}T00:00:00.000-06:00' AT TIME ZONE 'UTC-6')`
 
       dataQuery += ` AND ict.emp_code = :empCode`
 
